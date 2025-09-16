@@ -1,5 +1,6 @@
 # 🎲 Random Team Generator & Schedule Maker
-
+```
+Contoh:
 Ahmad Fauzi
 Budi Santoso
 Citra Dewi
