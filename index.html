@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Team Generator & Schedule Maker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Header Section */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        /* Mode Selector Tabs */
+        .mode-selector {
+            background: white;
+            border-radius: 15px;
+            padding: 5px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: transparent;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #666;
+        }
+
+        .mode-tab:hover {
+            background: #f0f0f0;
+        }
+
+        .mode-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Main Panel */
+        .main-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        /* Grid Layouts */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .naming-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 968px) {
+            .input-grid,
+            .naming-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Input Groups */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group input,
+        .input-group textarea,
+        .input-group select {
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: #f8f9fa;
+        }
+
+        .input-group textarea {
+            min-height: 150px;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus,
+        .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-group small {
+            color: #7f8c8d;
+            margin-top: 5px;
+            font-size: 0.85rem;
+        }
+
+        /* Template Selector */
+        .template-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .template-btn {
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .template-btn:hover {
+            border-color: #667eea;
+            background: #f8f9fa;
+        }
+
+        .template-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Custom Names Input */
+        #customNamesSection {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff8dc;
+            border-radius: 10px;
+            border: 2px dashed #ffd700;
+        }
+
+        #customNamesSection.active {
+            display: block;
+        }
+
+        /* Schedule Settings */
+        .schedule-settings {
+            display: none;
+            padding: 20px;
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .schedule-settings.active {
+            display: block;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        /* Info Boxes */
+        .info-box {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+
+        .info-box h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #00d4ff, #00a8cc);
+            color: white;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border-left: 4px solid #ffc107;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        /* Results Panel */
+        .results-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            display: none;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .results-panel.active {
+            display: block;
+        }
+
+        /* Statistics Bar */
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-top: 8px;
+        }
+
+        /* Teams Grid View */
+        .teams-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .team-card {
+            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .team-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(0,0,0,0.1);
+        }
+
+        .team-number {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .team-title {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Schedule View */
+        .schedule-container {
+            display: none;
+            margin-bottom: 30px;
+        }
+
+        .schedule-container.active {
+            display: block;
+        }
+
+        .schedule-table {
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .schedule-table thead {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .schedule-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .schedule-date {
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .schedule-names {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .name-badge {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border: 1px solid #667eea;
+        }
+
+        /* Calendar View */
+        .calendar-view {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .calendar-view.active {
+            display: block;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border: 1px solid #e0e6ed;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: #f8f9fa;
+            border-color: #667eea;
+        }
+
+        .calendar-day-header {
+            font-weight: bold;
+            text-align: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .calendar-day-number {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .calendar-day-content {
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        /* Member List */
+        .member-list {
+            list-style: none;
+        }
+
+        .member-item {
+            background: white;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.2s ease;
+            border: 1px solid #e0e6ed;
+        }
+
+        .member-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: #667eea;
+        }
+
+        .member-index {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .member-name {
+            flex: 1;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .repeat-badge {
+            background: linear-gradient(135deg, #ffd93d, #ffb347);
+            color: #333;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: none;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .view-toggle.active {
+            display: flex;
+        }
+
+        .view-btn {
+            padding: 10px 20px;
+            border: 2px solid #e0e6ed;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .view-btn:hover {
+            border-color: #667eea;
+        }
+
+        .view-btn.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none;
+            animation: slideInRight 0.4s ease;
+            z-index: 1000;
+            border-left: 4px solid #28a745;
+            max-width: 350px;
+        }
+
+        .toast.active {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        .spinner.active {
+            display: block;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎲 Random Team Generator & Schedule Maker</h1>
+            <p>Sistem pembagian tim otomatis dan pembuat jadwal piket, shift kerja, dan kebutuhan lainnya</p>
+        </div>
+
+        <!-- Mode Selector -->
+        <div class="mode-selector">
+            <button class="mode-tab active" onclick="setMode('team')">
+                <span>👥</span>
+                <span>Mode Tim/Kelompok</span>
+            </button>
+            <button class="mode-tab" onclick="setMode('schedule')">
+                <span>📅</span>
+                <span>Mode Jadwal Piket</span>
+            </button>
+        </div>
+
+        <!-- Main Input Panel -->
+        <div class="main-panel">
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- Input Grid -->
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="namesInput">
+                        <span>📝</span>
+                        <span>Daftar Nama</span>
+                    </label>
+                    <textarea id="namesInput" 
+                        placeholder="Masukkan nama-nama, pisahkan dengan koma atau enter&#10;&#10;Contoh:&#10;Ahmad, Budi, Citra&#10;atau&#10;Ahmad&#10;Budi&#10;Citra"></textarea>
+                    <small>Tips: Bisa copy-paste dari Excel atau dokumen lain</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="groupCount">
+                        <span>👥</span>
+                        <span id="groupCountLabel">Jumlah Tim/Kelompok</span>
+                    </label>
+                    <input type="number" id="groupCount" min="1" value="3" placeholder="Contoh: 3">
+                    <small id="groupCountHint">Berapa tim yang ingin dibuat</small>
+                </div>
+
+                <div class="input-group">
+                    <label for="memberCount">
+                        <span>🔢</span>
+                        <span>Anggota per Tim</span>
+                    </label>
+                    <input type="number" id="memberCount" min="1" placeholder="Kosongkan untuk bagi rata">
+                    <small>Opsional: Kosongkan untuk mode auto</small>
+                </div>
+            </div>
+
+            <!-- Naming Section -->
+            <div class="naming-grid">
+                <div class="input-group">
+                    <label>
+                        <span>🏷️</span>
+                        <span>Template Penamaan</span>
+                    </label>
+                    <div class="template-selector">
+                        <button class="template-btn active" onclick="setNamingTemplate('default')">Default</button>
+                        <button class="template-btn" onclick="setNamingTemplate('days')">Hari</button>
+                        <button class="template-btn" onclick="setNamingTemplate('weeks')">Minggu</button>
+                        <button class="template-btn" onclick="setNamingTemplate('months')">Bulan</button>
+                        <button class="template-btn" onclick="setNamingTemplate('shifts')">Shift</button>
+                        <button class="template-btn" onclick="setNamingTemplate('custom')">Custom</button>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div id="customNamesSection">
+                        <label for="customNames">
+                            <span>✏️</span>
+                            <span>Nama Custom (pisahkan dengan koma)</span>
+                        </label>
+                        <input type="text" id="customNames" 
+                            placeholder="Contoh: Kelompok A, Kelompok B, Kelompok C">
+                        <small>Jumlah nama harus sesuai dengan jumlah tim/kelompok</small>
+                    </div>
+                    <div id="templatePreview" style="padding: 15px; background: #f8f9fa; border-radius: 10px;">
+                        <strong>Preview:</strong> Tim 1, Tim 2, Tim 3...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schedule Settings (for Schedule Mode) -->
+            <div class="schedule-settings" id="scheduleSettings">
+                <h4 style="margin-bottom: 15px; color: #2c3e50;">
+                    <span>⚙️</span> Pengaturan Jadwal
+                </h4>
+                <div class="schedule-grid">
+                    <div class="input-group">
+                        <label for="startDate">
+                            <span>📅</span>
+                            <span>Tanggal Mulai</span>
+                        </label>
+                        <input type="date" id="startDate">
+                    </div>
+                    <div class="input-group">
+                        <label for="endDate">
+                            <span>📅</span>
+                            <span>Tanggal Selesai</span>
+                        </label>
+                        <input type="date" id="endDate">
+                    </div>
+                    <div class="input-group">
+                        <label for="scheduleType">
+                            <span>🔄</span>
+                            <span>Tipe Jadwal</span>
+                        </label>
+                        <select id="scheduleType">
+                            <option value="daily">Harian</option>
+                            <option value="weekly">Mingguan</option>
+                            <option value="monthly">Bulanan</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="includeWeekends">
+                            <span>📆</span>
+                            <span>Termasuk Weekend</span>
+                        </label>
+                        <select id="includeWeekends">
+                            <option value="yes">Ya</option>
+                            <option value="no">Tidak</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="generate()">
+                    <span>🎲</span>
+                    <span id="generateBtnText">Generate Tim</span>
+                </button>
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    <span>🔄</span>
+                    <span>Reset</span>
+                </button>
+                <button class="btn btn-secondary" onclick="loadExample()">
+                    <span>💡</span>
+                    <span>Contoh Data</span>
+                </button>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="spinner" id="loadingSpinner"></div>
+        </div>
+
+        <!-- Results Panel -->
+        <div class="results-panel" id="resultsPanel">
+            <div class="results-header" style="margin-bottom: 25px;">
+                <h2>
+                    <span>📊</span>
+                    <span id="resultsTitle">Hasil Pembagian Tim</span>
+                </h2>
+            </div>
+
+            <!-- View Toggle (for schedule mode) -->
+            <div class="view-toggle" id="viewToggle">
+                <button class="view-btn active" onclick="setView('list')">
+                    <span>📋</span> List View
+                </button>
+                <button class="view-btn" onclick="setView('calendar')">
+                    <span>📅</span> Calendar View
+                </button>
+                <button class="view-btn" onclick="setView('table')">
+                    <span>📊</span> Table View
+                </button>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-container" id="statsContainer"></div>
+
+            <!-- Teams Grid View (default) -->
+            <div class="teams-container" id="teamsContainer"></div>
+
+            <!-- Schedule Table View -->
+            <div class="schedule-container" id="scheduleContainer">
+                <table class="schedule-table">
+                    <thead id="scheduleHeader"></thead>
+                    <tbody id="scheduleBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Calendar View -->
+            <div class="calendar-view" id="calendarView">
+                <div class="calendar-header">
+                    <button class="btn btn-secondary" onclick="previousMonth()">←</button>
+                    <h3 id="calendarMonth">Januari 2024</h3>
+                    <button class="btn btn-secondary" onclick="nextMonth()">→</button>
+                </div>
+                <div class="calendar-grid" id="calendarGrid"></div>
+            </div>
+
+            <!-- Export Section -->
+            <div class="export-section">
+                <div class="export-title" style="font-weight: 600; color: #2c3e50; margin-bottom: 20px;">
+                    <span>💾</span>
+                    <span>Export & Aksi Lanjutan</span>
+                </div>
+                <div class="export-buttons" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn btn-success" onclick="regenerate()">
+                        <span>🔄</span>
+                        <span>Acak Ulang</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="copyAsText()">
+                        <span>📋</span>
+                        <span>Copy Text</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="copyAsTable()">
+                        <span>📊</span>
+                        <span>Copy Tabel</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadCSV()">
+                        <span>💾</span>
+                        <span>Download CSV</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadICS()" id="downloadICSBtn" style="display: none;">
+                        <span>📅</span>
+                        <span>Download Calendar</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="printResults()">
+                        <span>🖨️</span>
+                        <span>Print</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">✅</div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle">Berhasil!</div>
+            <div class="toast-message" id="toastMessage">Aksi berhasil dilakukan</div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentMode = 'team'; // 'team' or 'schedule'
+        let currentTemplate = 'default';
+        let currentView = 'list'; // 'list', 'calendar', 'table'
+        let currentTeams = [];
+        let allNames = [];
+        let scheduleData = [];
+        let currentMonth = new Date();
+
+        // Naming Templates
+        const namingTemplates = {
+            default: () => {
+                const count = parseInt(document.getElementById('groupCount').value) || 3;
+                return Array.from({length: count}, (_, i) => `Tim ${i + 1}`);
+            },
+            days: () => ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'],
+            weeks: () => {
+                const count = parseInt(document.getElementById('groupCount').value) || 4;
+                return Array.from({length: count}, (_, i) => `Minggu ${i + 1}`);
+            },
+            months: () => ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+            shifts: () => ['Shift Pagi', 'Shift Siang', 'Shift Malam'],
+            custom: () => {
+                const customNames = document.getElementById('customNames').value;
+                if (customNames) {
+                    return customNames.split(',').map(name => name.trim());
+                }
+                return namingTemplates.default();
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('startDate').value = today;
+            
+            // Set end date to 30 days from now
+            const endDate = new Date();
+            endDate.setDate(endDate.getDate() + 30);
+            document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+        });
+
+        // Mode Switching
+        function setMode(mode) {
+            currentMode = mode;
+            
+            // Update UI
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.mode-tab').classList.add('active');
+            
+            // Update labels and visibility
+            if (mode === 'schedule') {
+                document.getElementById('groupCountLabel').innerHTML = '<span>📅</span> Jumlah Hari/Periode';
+                document.getElementById('groupCountHint').textContent = 'Berapa hari/periode jadwal';
+                document.getElementById('scheduleSettings').classList.add('active');
+                document.getElementById('generateBtnText').textContent = 'Generate Jadwal';
+                document.getElementById('resultsTitle').textContent = 'Jadwal Piket';
+                document.getElementById('downloadICSBtn').style.display = 'inline-flex';
+                
+                // Set default template for schedule
+                if (currentTemplate === 'default') {
+                    setNamingTemplate('days');
+                }
+            } else {
+                document.getElementById('groupCountLabel').innerHTML = '<span>👥</span> Jumlah Tim/Kelompok';
+                document.getElementById('groupCountHint').textContent = 'Berapa tim yang ingin dibuat';
+                document.getElementById('scheduleSettings').classList.remove('active');
+                document.getElementById('generateBtnText').textContent = 'Generate Tim';
+                document.getElementById('resultsTitle').textContent = 'Hasil Pembagian Tim';
+                document.getElementById('downloadICSBtn').style.display = 'none';
+            }
+        }
+
+        // Template Selection
+        function setNamingTemplate(template) {
+            currentTemplate = template;
+            
+            // Update UI
+            document.querySelectorAll('.template-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide custom input
+            if (template === 'custom') {
+                document.getElementById('customNamesSection').classList.add('active');
+            } else {
+                document.getElementById('customNamesSection').classList.remove('active');
+            }
+            
+            // Update preview
+            updateTemplatePreview();
+            
+            // Auto-adjust group count for fixed templates
+            if (template === 'days') {
+                document.getElementById('groupCount').value = 7;
+            } else if (template === 'shifts') {
+                document.getElementById('groupCount').value = 3;
+            } else if (template === 'months') {
+                document.getElementById('groupCount').value = 12;
+            }
+        }
+
+        function updateTemplatePreview() {
+            const names = namingTemplates[currentTemplate]();
+            const preview = names.slice(0, 3).join(', ') + (names.length > 3 ? '...' : '');
+            document.getElementById('templatePreview').innerHTML = 
+                `<strong>Preview:</strong> ${preview}`;
+        }
+
+        // View Switching (for schedule mode)
+        function setView(view) {
+            currentView = view;
+            
+            // Update buttons
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide views
+            document.getElementById('teamsContainer').style.display = view === 'list' ? 'grid' : 'none';
+            document.getElementById('scheduleContainer').classList.toggle('active', view === 'table');
+            document.getElementById('calendarView').classList.toggle('active', view === 'calendar');
+            
+            if (view === 'calendar') {
+                renderCalendar();
+            }
+        }
+
+        // Utility Functions
+        function parseNames(input) {
+            const names = input.split(/[,\n]/)
+                .map(name => name.trim())
+                .filter(name => name.length > 0);
+            return [...new Set(names)];
+        }
+
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        function showAlert(message, type = 'info') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} active`;
+            alertDiv.innerHTML = message;
+            
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.remove('active');
+            }, 5000);
+        }
+
+        function showToast(title, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastTitle').textContent = title;
+            document.getElementById('toastMessage').textContent = message;
+            
+            toast.classList.add('active');
+            setTimeout(() => {
+                toast.classList.remove('active');
+            }, 3000);
+        }
+
+        // Main Generate Function
+        function generate() {
+            if (currentMode === 'team') {
+                generateTeams();
+            } else {
+                generateSchedule();
+            }
+        }
+
+        // Generate Teams (existing logic with naming)
+        function generateTeams() {
+            document.getElementById('alertContainer').innerHTML = '';
+            
+            const namesInput = document.getElementById('namesInput').value.trim();
+            const groupCount = parseInt(document.getElementById('groupCount').value);
+            const memberCountInput = document.getElementById('memberCount').value;
+            const memberCount = memberCountInput ? parseInt(memberCountInput) : null;
+
+            if (!namesInput) {
+                showAlert('⚠️ Silakan masukkan daftar nama terlebih dahulu', 'warning');
+                return;
+            }
+
+            allNames = parseNames(namesInput);
+            
+            if (allNames.length === 0) {
+                showAlert('⚠️ Tidak ada nama valid yang ditemukan', 'warning');
+                return;
+            }
+
+            if (!groupCount || groupCount < 1) {
+                showAlert('⚠️ Jumlah tim harus minimal 1', 'warning');
+                return;
+            }
+
+            // Get team names from template
+            const teamNames = namingTemplates[currentTemplate]();
+            if (teamNames.length < groupCount) {
+                showAlert('⚠️ Jumlah nama tim tidak cukup untuk jumlah kelompok yang diminta', 'warning');
+                return;
+            }
+
+            document.getElementById('loadingSpinner').classList.add('active');
+
+            setTimeout(() => {
+                if (memberCount !== null) {
+                    generateFixedTeams(groupCount, memberCount, teamNames);
+                } else {
+                    generateAutoTeams(groupCount, teamNames);
+                }
+                document.getElementById('loadingSpinner').classList.remove('active');
+            }, 100);
+        }
+
+        // Generate Fixed Teams
+        function generateFixedTeams(groupCount, memberCount, teamNames) {
+            if (memberCount > allNames.length) {
+                showAlert(`❌ Tidak mungkin membuat tim dengan ${memberCount} anggota dari hanya ${allNames.length} nama unik`, 'error');
+                return;
+            }
+
+            const totalSlotsNeeded = groupCount * memberCount;
+            let namePool = [];
+            const cyclesNeeded = Math.ceil(totalSlotsNeeded / allNames.length);
+            
+            for (let i = 0; i < cyclesNeeded; i++) {
+                namePool = namePool.concat(shuffleArray([...allNames]));
+            }
+            
+            currentTeams = [];
+            const usedNameIndices = new Set();
+            
+            for (let teamIdx = 0; teamIdx < groupCount; teamIdx++) {
+                const team = {
+                    name: teamNames[teamIdx],
+                    members: []
+                };
+                const namesInThisTeam = new Set();
+                
+                let attempts = 0;
+                const maxAttempts = namePool.length * 2;
+                
+                while (team.members.length < memberCount && attempts < maxAttempts) {
+                    attempts++;
+                    
+                    for (let i = 0; i < namePool.length; i++) {
+                        if (!usedNameIndices.has(i)) {
+                            const candidateName = namePool[i];
+                            
+                            if (!namesInThisTeam.has(candidateName)) {
+                                team.members.push(candidateName);
+                                namesInThisTeam.add(candidateName);
+                                usedNameIndices.add(i);
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if (team.members.length < memberCount && usedNameIndices.size === namePool.length) {
+                        usedNameIndices.clear();
+                    }
+                }
+                
+                while (team.members.length < memberCount) {
+                    for (let name of allNames) {
+                        if (!namesInThisTeam.has(name)) {
+                            team.members.push(name);
+                            namesInThisTeam.add(name);
+                            break;
+                        }
+                    }
+                }
+                
+                currentTeams.push(team);
+            }
+            
+            showAlert(
+                `✅ <strong>Berhasil!</strong> ${groupCount} ${currentMode === 'team' ? 'tim' : 'jadwal'} dengan ${memberCount} anggota`,
+                'success'
+            );
+            
+            displayResults();
+        }
+
+        // Generate Auto Teams
+        function generateAutoTeams(groupCount, teamNames) {
+            if (groupCount > allNames.length) {
+                showAlert('⚠️ Jumlah tim tidak boleh lebih dari jumlah nama untuk mode bagi rata', 'warning');
+                return;
+            }
+
+            const shuffledNames = shuffleArray([...allNames]);
+            const baseSize = Math.floor(allNames.length / groupCount);
+            const remainder = allNames.length % groupCount;
+            
+            currentTeams = [];
+            let currentIndex = 0;
+            
+            for (let i = 0; i < groupCount; i++) {
+                const teamSize = baseSize + (i < remainder ? 1 : 0);
+                const team = {
+                    name: teamNames[i],
+                    members: shuffledNames.slice(currentIndex, currentIndex + teamSize)
+                };
+                currentTeams.push(team);
+                currentIndex += teamSize;
+            }
+            
+            showAlert(`✅ <strong>Berhasil!</strong> Pembagian otomatis ke ${groupCount} tim`, 'success');
+            displayResults();
+        }
+
+        // Generate Schedule
+        function generateSchedule() {
+            const startDate = new Date(document.getElementById('startDate').value);
+            const endDate = new Date(document.getElementById('endDate').value);
+            const includeWeekends = document.getElementById('includeWeekends').value === 'yes';
+            
+            if (!startDate || !endDate) {
+                showAlert('⚠️ Silakan tentukan tanggal mulai dan selesai', 'warning');
+                return;
+            }
+            
+            if (endDate < startDate) {
+                showAlert('⚠️ Tanggal selesai tidak boleh lebih awal dari tanggal mulai', 'warning');
+                return;
+            }
+            
+            // Generate teams first
+            generateTeams();
+            
+            if (currentTeams.length === 0) return;
+            
+            // Create schedule data
+            scheduleData = [];
+            let currentDate = new Date(startDate);
+            let teamIndex = 0;
+            
+            while (currentDate <= endDate) {
+                const dayOfWeek = currentDate.getDay();
+                
+                // Skip weekends if needed
+                if (!includeWeekends && (dayOfWeek === 0 || dayOfWeek === 6)) {
+                    currentDate.setDate(currentDate.getDate() + 1);
+                    continue;
+                }
+                
+                scheduleData.push({
+                    date: new Date(currentDate),
+                    team: currentTeams[teamIndex % currentTeams.length],
+                    dayName: getDayName(dayOfWeek)
+                });
+                
+                teamIndex++;
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            
+            // Show view toggle for schedule mode
+            document.getElementById('viewToggle').classList.add('active');
+            
+            displayScheduleResults();
+        }
+
+        // Display Results
+        function displayResults() {
+            const resultsPanel = document.getElementById('resultsPanel');
+            const statsContainer = document.getElementById('statsContainer');
+            const teamsContainer = document.getElementById('teamsContainer');
+            
+            // Hide view toggle for team mode
+            document.getElementById('viewToggle').classList.remove('active');
+            
+            // Calculate statistics
+            const totalMembers = currentTeams.reduce((sum, team) => sum + team.members.length, 0);
+            const avgPerTeam = (totalMembers / currentTeams.length).toFixed(1);
+            
+            const globalUsage = {};
+            allNames.forEach(name => globalUsage[name] = 0);
+            currentTeams.forEach(team => {
+                team.members.forEach(name => globalUsage[name]++);
+            });
+            
+            // Display statistics
+            statsContainer.innerHTML = `
+                <div class="stat-item">
+                    <div class="stat-value">${allNames.length}</div>
+                    <div class="stat-label">Nama Unik</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${currentTeams.length}</div>
+                    <div class="stat-label">Jumlah ${currentMode === 'team' ? 'Tim' : 'Periode'}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${totalMembers}</div>
+                    <div class="stat-label">Total Slot</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">${avgPerTeam}</div>
+                    <div class="stat-label">Rata-rata/Tim</div>
+                </div>
+            `;
+            
+            // Display teams
+            teamsContainer.innerHTML = '';
+            teamsContainer.style.display = 'grid';
+            
+            currentTeams.forEach((team, index) => {
+                const teamCard = document.createElement('div');
+                teamCard.className = 'team-card';
+                teamCard.style.animationDelay = `${index * 0.1}s`;
+                
+                let membersHTML = '';
+                team.members.forEach((member, i) => {
+                    const isRepeated = globalUsage[member] > 1;
+                    membersHTML += `
+                        <li class="member-item">
+                            <span class="member-index">${i + 1}</span>
+                            <span class="member-name">${member}</span>
+                            ${isRepeated ? `<span class="repeat-badge">♻️ ${globalUsage[member]}x</span>` : ''}
+                        </li>
+                    `;
+                });
+                
+                teamCard.innerHTML = `
+                    <div class="team-header">
+                        <div class="team-number">${index + 1}</div>
+                        <div class="team-info">
+                            <div class="team-title">${team.name}</div>
+                            <div class="team-meta" style="font-size: 0.9rem; color: #7f8c8d;">
+                                ${team.members.length} anggota
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="member-list">
+                        ${membersHTML}
+                    </ul>
+                `;
+                
+                teamsContainer.appendChild(teamCard);
+            });
+            
+            resultsPanel.classList.add('active');
+            resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Display Schedule Results
+        function displayScheduleResults() {
+            displayResults(); // Show teams first
+            
+            // Also create schedule table
+            const scheduleHeader = document.getElementById('scheduleHeader');
+            const scheduleBody = document.getElementById('scheduleBody');
+            
+            scheduleHeader.innerHTML = `
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Hari</th>
+                    <th>Tim/Shift</th>
+                    <th>Petugas</th>
+                </tr>
+            `;
+            
+            scheduleBody.innerHTML = '';
+            scheduleData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        ${item.date.toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        })}
+                    </td>
+                    <td>${item.dayName}</td>
+                    <td><strong>${item.team.name}</strong></td>
+                    <td>
+                        <div class="schedule-names">
+                            ${item.team.members.map(name => 
+                                `<span class="name-badge">${name}</span>`
+                            ).join('')}
+                        </div>
+                    </td>
+                `;
+                scheduleBody.appendChild(row);
+            });
+        }
+
+        // Calendar Functions
+        function renderCalendar() {
+            const calendarGrid = document.getElementById('calendarGrid');
+            const year = currentMonth.getFullYear();
+            const month = currentMonth.getMonth();
+            
+            // Update header
+            document.getElementById('calendarMonth').textContent = 
+                new Date(year, month).toLocaleDateString('id-ID', {
+                    month: 'long',
+                    year: 'numeric'
+                });
+            
+            // Clear grid
+            calendarGrid.innerHTML = '';
+            
+            // Add day headers
+            const dayHeaders = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                calendarGrid.appendChild(header);
+            });
+            
+            // Get first day and days in month
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells
+            for (let i = 0; i < firstDay; i++) {
+                calendarGrid.appendChild(document.createElement('div'));
+            }
+            
+            // Add days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'calendar-day';
+                
+                const currentDate = new Date(year, month, day);
+                const scheduleItem = scheduleData.find(item => 
+                    item.date.toDateString() === currentDate.toDateString()
+                );
+                
+                if (scheduleItem) {
+                    dayDiv.innerHTML = `
+                        <div class="calendar-day-number">${day}</div>
+                        <div class="calendar-day-content">
+                            <strong>${scheduleItem.team.name}</strong><br>
+                            ${scheduleItem.team.members.slice(0, 2).join(', ')}
+                            ${scheduleItem.team.members.length > 2 ? '...' : ''}
+                        </div>
+                    `;
+                    dayDiv.style.background = '#e3f2fd';
+                } else {
+                    dayDiv.innerHTML = `<div class="calendar-day-number">${day}</div>`;
+                }
+                
+                calendarGrid.appendChild(dayDiv);
+            }
+        }
+
+        function previousMonth() {
+            currentMonth.setMonth(currentMonth.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth.setMonth(currentMonth.getMonth() + 1);
+            renderCalendar();
+        }
+
+        // Helper Functions
+        function getDayName(dayIndex) {
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            return days[dayIndex];
+        }
+
+        // Export Functions
+        function regenerate() {
+            generate();
+            showToast('Berhasil!', 'Data telah diacak ulang');
+        }
+
+        function resetForm() {
+            document.getElementById('namesInput').value = '';
+            document.getElementById('groupCount').value = '3';
+            document.getElementById('memberCount').value = '';
+            document.getElementById('customNames').value = '';
+            document.getElementById('resultsPanel').classList.remove('active');
+            document.getElementById('alertContainer').innerHTML = '';
+            currentTeams = [];
+            allNames = [];
+            scheduleData = [];
+            setNamingTemplate('default');
+            showToast('Reset', 'Form telah direset');
+        }
+
+        function loadExample() {
+            document.getElementById('namesInput').value = 
+                'Ahmad Fauzi, Budi Santoso, Citra Dewi, Diana Putri, Eko Prasetyo, ' +
+                'Fajar Hidayat, Gita Permata, Hendra Wijaya, Indah Sari';
+            
+            if (currentMode === 'team') {
+                document.getElementById('groupCount').value = '3';
+                document.getElementById('memberCount').value = '4';
+            } else {
+                document.getElementById('groupCount').value = '7';
+                document.getElementById('memberCount').value = '2';
+                setNamingTemplate('days');
+            }
+            
+            showToast('Contoh Data', 'Data contoh telah dimuat');
+        }
+
+        function copyAsText() {
+            let text = '';
+            
+            if (currentMode === 'team') {
+                text = '=== HASIL PEMBAGIAN TIM ===\n';
+                text += `Tanggal: ${new Date().toLocaleDateString('id-ID')}\n`;
+                text += `Total: ${currentTeams.length} tim, ${allNames.length} nama unik\n\n`;
+                
+                currentTeams.forEach((team, index) => {
+                    text += `${team.name} (${team.members.length} anggota):\n`;
+                    team.members.forEach((member, i) => {
+                        text += `  ${i + 1}. ${member}\n`;
+                    });
+                    text += '\n';
+                });
+            } else {
+                text = '=== JADWAL PIKET ===\n';
+                text += `Periode: ${document.getElementById('startDate').value} - ${document.getElementById('endDate').value}\n\n`;
+                
+                scheduleData.forEach(item => {
+                    text += `${item.date.toLocaleDateString('id-ID')} (${item.dayName})\n`;
+                    text += `${item.team.name}: ${item.team.members.join(', ')}\n\n`;
+                });
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Berhasil!', 'Hasil telah disalin sebagai teks');
+            });
+        }
+
+        function copyAsTable() {
+            let table = '';
+            
+            if (currentMode === 'team') {
+                table = 'Tim\tNo\tNama\n';
+                currentTeams.forEach((team) => {
+                    team.members.forEach((member, i) => {
+                        table += `${team.name}\t${i + 1}\t${member}\n`;
+                    });
+                });
+            } else {
+                table = 'Tanggal\tHari\tTim\tPetugas\n';
+                scheduleData.forEach(item => {
+                    table += `${item.date.toLocaleDateString('id-ID')}\t${item.dayName}\t${item.team.name}\t${item.team.members.join(', ')}\n`;
+                });
+            }
+            
+            navigator.clipboard.writeText(table).then(() => {
+                showToast('Berhasil!', 'Hasil telah disalin sebagai tabel');
+            });
+        }
+
+        function downloadCSV() {
+            let csv = '\uFEFF'; // BOM for UTF-8
+            
+            if (currentMode === 'team') {
+                csv += 'Tim,No,Nama\n';
+                currentTeams.forEach((team) => {
+                    team.members.forEach((member, i) => {
+                        csv += `"${team.name}",${i + 1},"${member}"\n`;
+                    });
+                });
+            } else {
+                csv += 'Tanggal,Hari,Tim,Petugas\n';
+                scheduleData.forEach(item => {
+                    csv += `"${item.date.toLocaleDateString('id-ID')}","${item.dayName}","${item.team.name}","${item.team.members.join(', ')}"\n`;
+                });
+            }
+            
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${currentMode === 'team' ? 'pembagian_tim' : 'jadwal_piket'}_${new Date().getTime()}.csv`;
+            link.click();
+            
+            showToast('Berhasil!', 'File CSV telah diunduh');
+        }
+
+        function downloadICS() {
+            if (currentMode !== 'schedule' || scheduleData.length === 0) return;
+            
+            let ics = 'BEGIN:VCALENDAR\n';
+            ics += 'VERSION:2.0\n';
+            ics += 'PRODID:-//Random Team Generator//Schedule//EN\n';
+            
+            scheduleData.forEach((item, index) => {
+                ics += 'BEGIN:VEVENT\n';
+                ics += `UID:${index}-${Date.now()}@teamgenerator\n`;
+                ics += `DTSTART:${formatDateForICS(item.date)}T080000\n`;
+                ics += `DTEND:${formatDateForICS(item.date)}T170000\n`;
+                ics += `SUMMARY:Piket: ${item.team.name}\n`;
+                ics += `DESCRIPTION:Petugas: ${item.team.members.join(', ')}\n`;
+                ics += 'END:VEVENT\n';
+            });
+            
+            ics += 'END:VCALENDAR';
+            
+            const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `jadwal_piket_${new Date().getTime()}.ics`;
+            link.click();
+            
+            showToast('Berhasil!', 'File calendar telah diunduh');
+        }
+
+        function formatDateForICS(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}${month}${day}`;
+        }
+
+        function printResults() {
+            window.print();
+            showToast('Print', 'Silakan pilih printer');
+        }
+    </script>
+</body>
+</html>
