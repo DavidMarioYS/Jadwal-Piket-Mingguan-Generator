@@ -298,6 +298,11 @@
             color: white;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            color: white;
+        }
+
         /* Alert Messages */
         .alert {
             padding: 15px 20px;
@@ -677,6 +682,392 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Print Preview Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            position: relative;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .modal-close {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            background: #f0f0f0;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #dc3545;
+            color: white;
+        }
+
+        .print-preview {
+            background: white;
+            padding: 40px;
+            border: 1px solid #ddd;
+            margin: 20px 0;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* IMPROVED PRINT STYLES WITH DYNAMIC LAYOUT */
+        @media print {
+            /* Hide all non-essential elements */
+            .header,
+            .mode-selector,
+            .main-panel,
+            .export-section,
+            .view-toggle,
+            .btn,
+            .toast,
+            .modal,
+            .alert,
+            .calendar-header button,
+            .no-print {
+                display: none !important;
+            }
+
+            /* Reset body styles */
+            body {
+                background: white !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                color: #000 !important;
+            }
+
+            /* Container adjustments */
+            .container {
+                max-width: 100% !important;
+                padding: 10mm !important;
+            }
+
+            /* Results panel optimization */
+            .results-panel {
+                box-shadow: none !important;
+                padding: 0 !important;
+                border: none !important;
+                page-break-inside: avoid;
+            }
+
+            /* Print header */
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                padding-bottom: 15px;
+                border-bottom: 3px double #333;
+            }
+
+            .print-header h1 {
+                font-size: 20pt;
+                margin-bottom: 8px;
+                font-weight: bold;
+            }
+
+            .print-header .print-date {
+                font-size: 10pt;
+                color: #555;
+            }
+
+            .print-header .print-info {
+                font-size: 11pt;
+                margin-top: 5px;
+            }
+
+            /* Statistics container */
+            .stats-container {
+                background: none !important;
+                border: 2px solid #333;
+                margin-bottom: 20px;
+                page-break-inside: avoid;
+                padding: 10px !important;
+            }
+
+            .stat-item {
+                border-right: 1px solid #ddd;
+            }
+
+            .stat-item:last-child {
+                border-right: none;
+            }
+
+            .stat-value {
+                background: none !important;
+                -webkit-text-fill-color: #000 !important;
+                color: #000 !important;
+                font-size: 18pt !important;
+            }
+
+            .stat-label {
+                font-size: 9pt !important;
+            }
+
+            /* Teams container - DEFAULT PORTRAIT */
+            .teams-container {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+                margin-bottom: 20px;
+            }
+
+            .team-card {
+                background: white !important;
+                border: 2px solid #000 !important;
+                padding: 10px !important;
+                page-break-inside: avoid;
+                box-shadow: none !important;
+                margin-bottom: 0 !important;
+            }
+
+            .team-card:hover {
+                transform: none !important;
+            }
+
+            .team-header {
+                border-bottom: 2px solid #000 !important;
+                padding-bottom: 8px !important;
+                margin-bottom: 10px !important;
+            }
+
+            .team-number {
+                width: 35px !important;
+                height: 35px !important;
+                background: #f0f0f0 !important;
+                border: 2px solid #000 !important;
+                color: #000 !important;
+                font-size: 14pt !important;
+            }
+
+            .team-title {
+                font-size: 12pt !important;
+                font-weight: bold !important;
+            }
+
+            /* Member items */
+            .member-list {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .member-item {
+                border: 1px solid #ccc !important;
+                background: white !important;
+                page-break-inside: avoid;
+                padding: 6px 10px !important;
+                margin-bottom: 4px !important;
+            }
+
+            .member-item:hover {
+                transform: none !important;
+            }
+
+            .member-index {
+                width: 20px !important;
+                height: 20px !important;
+                background: #333 !important;
+                border: none !important;
+                color: white !important;
+                font-size: 9pt !important;
+            }
+
+            .member-name {
+                font-size: 10pt !important;
+            }
+
+            .repeat-badge {
+                background: #f0f0f0 !important;
+                border: 1px solid #333 !important;
+                color: #333 !important;
+                font-size: 8pt !important;
+                padding: 2px 6px !important;
+            }
+
+            /* Schedule table */
+            .schedule-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                font-size: 10pt !important;
+            }
+
+            .schedule-table thead {
+                background: #333 !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .schedule-table th {
+                padding: 8px !important;
+                font-weight: bold !important;
+                border: 1px solid #333 !important;
+                color: white !important;
+            }
+
+            .schedule-table td {
+                padding: 6px !important;
+                border: 1px solid #666 !important;
+            }
+
+            .schedule-table tbody tr:nth-child(even) {
+                background: #f9f9f9 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .name-badge {
+                background: #e0e0e0 !important;
+                border: 1px solid #333 !important;
+                color: #000 !important;
+                padding: 2px 6px !important;
+                font-size: 9pt !important;
+                margin: 2px !important;
+            }
+
+            /* Page break controls */
+            .page-break {
+                page-break-after: always;
+            }
+
+            .no-break {
+                page-break-inside: avoid;
+            }
+        }
+
+        /* PORTRAIT ORIENTATION SPECIFIC */
+        @media print and (orientation: portrait) {
+            @page {
+                size: A4 portrait;
+                margin: 15mm;
+            }
+
+            .teams-container {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
+            }
+
+            .team-card {
+                font-size: 10pt;
+            }
+
+            .schedule-table {
+                font-size: 9pt !important;
+            }
+        }
+
+        /* LANDSCAPE ORIENTATION SPECIFIC */
+        @media print and (orientation: landscape) {
+            @page {
+                size: A4 landscape;
+                margin: 10mm;
+            }
+
+            .teams-container {
+                grid-template-columns: repeat(4, 1fr) !important;
+                gap: 10px !important;
+            }
+
+            .team-card {
+                font-size: 9pt;
+                padding: 8px !important;
+            }
+
+            .team-header {
+                margin-bottom: 8px !important;
+            }
+
+            .team-number {
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 12pt !important;
+            }
+
+            .team-title {
+                font-size: 10pt !important;
+            }
+
+            .member-item {
+                padding: 4px 8px !important;
+                margin-bottom: 3px !important;
+            }
+
+            .member-index {
+                width: 18px !important;
+                height: 18px !important;
+                font-size: 8pt !important;
+            }
+
+            .member-name {
+                font-size: 9pt !important;
+            }
+
+            .schedule-table {
+                font-size: 8pt !important;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 4px !important;
+            }
+        }
+
+        /* A3 Paper Size Support */
+        @media print and (min-width: 297mm) {
+            @page {
+                size: A3;
+                margin: 15mm;
+            }
+
+            .teams-container {
+                grid-template-columns: repeat(6, 1fr) !important;
+            }
+        }
+
+        /* Letter Size Support (US) */
+        @media print and (min-width: 8.5in) and (max-width: 11in) {
+            @page {
+                size: letter;
+                margin: 0.5in;
+            }
+
+            .teams-container {
+                grid-template-columns: repeat(3, 1fr) !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -685,6 +1076,13 @@
         <div class="header">
             <h1>🎲 Random Team Generator & Schedule Maker</h1>
             <p>Sistem pembagian tim otomatis dan pembuat jadwal piket, shift kerja, dan kebutuhan lainnya</p>
+        </div>
+
+        <!-- Print Header (hidden on screen) -->
+        <div class="print-header" style="display: none;">
+            <h1>Hasil Pembagian Tim / Jadwal</h1>
+            <div class="print-date"></div>
+            <div class="print-info"></div>
         </div>
 
         <!-- Mode Selector -->
@@ -901,15 +1299,52 @@
                         <span>💾</span>
                         <span>Download CSV</span>
                     </button>
+                    <button class="btn btn-success" onclick="downloadExcel()">
+                        <span>📗</span>
+                        <span>Download Excel</span>
+                    </button>
+                    <button class="btn btn-secondary" onclick="downloadJSON()">
+                        <span>📄</span>
+                        <span>Download JSON</span>
+                    </button>
+                    <button class="btn btn-danger" onclick="downloadPDF()">
+                        <span>📕</span>
+                        <span>Download PDF</span>
+                    </button>
                     <button class="btn btn-secondary" onclick="downloadICS()" id="downloadICSBtn" style="display: none;">
                         <span>📅</span>
                         <span>Download Calendar</span>
+                    </button>
+                    <button class="btn btn-primary" onclick="showPrintPreview()">
+                        <span>👁️</span>
+                        <span>Print Preview</span>
                     </button>
                     <button class="btn btn-secondary" onclick="printResults()">
                         <span>🖨️</span>
                         <span>Print</span>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Print Preview Modal -->
+    <div class="modal" id="printModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Print Preview</h2>
+                <button class="modal-close" onclick="closePrintPreview()">×</button>
+            </div>
+            <div class="print-preview" id="printPreview"></div>
+            <div class="button-container">
+                <button class="btn btn-primary" onclick="printFromPreview()">
+                    <span>🖨️</span>
+                    <span>Print</span>
+                </button>
+                <button class="btn btn-secondary" onclick="closePrintPreview()">
+                    <span>❌</span>
+                    <span>Tutup</span>
+                </button>
             </div>
         </div>
     </div>
@@ -923,6 +1358,9 @@
         </div>
     </div>
 
+    <!-- Add SheetJS library for Excel export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    
     <script>
         // Global variables
         let currentMode = 'team'; // 'team' or 'schedule'
@@ -1528,11 +1966,12 @@
         function loadExample() {
             document.getElementById('namesInput').value = 
                 'Ahmad Fauzi, Budi Santoso, Citra Dewi, Diana Putri, Eko Prasetyo, ' +
-                'Fajar Hidayat, Gita Permata, Hendra Wijaya, Indah Sari';
+                'Fajar Hidayat, Gita Permata, Hendra Wijaya, Indah Sari, Joko Susilo, ' +
+                'Kartika Putri, Lukman Hakim, Maya Sari, Nanda Pratama, Oktavia Rahman';
             
             if (currentMode === 'team') {
                 document.getElementById('groupCount').value = '3';
-                document.getElementById('memberCount').value = '4';
+                document.getElementById('memberCount').value = '5';
             } else {
                 document.getElementById('groupCount').value = '7';
                 document.getElementById('memberCount').value = '2';
@@ -1543,6 +1982,11 @@
         }
 
         function copyAsText() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk disalin', 'warning');
+                return;
+            }
+            
             let text = '';
             
             if (currentMode === 'team') {
@@ -1573,6 +2017,11 @@
         }
 
         function copyAsTable() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk disalin', 'warning');
+                return;
+            }
+            
             let table = '';
             
             if (currentMode === 'team') {
@@ -1595,17 +2044,38 @@
         }
 
         function downloadCSV() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk diunduh', 'warning');
+                return;
+            }
+            
             let csv = '\uFEFF'; // BOM for UTF-8
             
+            // Add metadata header
+            csv += `"Generated Date","${new Date().toLocaleDateString('id-ID')}"\n`;
+            csv += `"Mode","${currentMode === 'team' ? 'Pembagian Tim' : 'Jadwal Piket'}"\n`;
+            csv += `"Total Teams","${currentTeams.length}"\n`;
+            csv += `"Total Names","${allNames.length}"\n`;
+            csv += '\n';
+            
             if (currentMode === 'team') {
-                csv += 'Tim,No,Nama\n';
+                // Team mode - formatted table
+                csv += '"Tim","No","Nama","Status"\n';
                 currentTeams.forEach((team) => {
                     team.members.forEach((member, i) => {
-                        csv += `"${team.name}",${i + 1},"${member}"\n`;
+                        const globalUsage = {};
+                        allNames.forEach(name => globalUsage[name] = 0);
+                        currentTeams.forEach(t => {
+                            t.members.forEach(name => globalUsage[name]++);
+                        });
+                        const status = globalUsage[member] > 1 ? `Repeat ${globalUsage[member]}x` : 'Single';
+                        csv += `"${team.name}",${i + 1},"${member}","${status}"\n`;
                     });
+                    csv += ',,,""\n'; // Empty row between teams
                 });
             } else {
-                csv += 'Tanggal,Hari,Tim,Petugas\n';
+                // Schedule mode - formatted table
+                csv += '"Tanggal","Hari","Tim","Petugas"\n';
                 scheduleData.forEach(item => {
                     csv += `"${item.date.toLocaleDateString('id-ID')}","${item.dayName}","${item.team.name}","${item.team.members.join(', ')}"\n`;
                 });
@@ -1618,6 +2088,431 @@
             link.click();
             
             showToast('Berhasil!', 'File CSV telah diunduh');
+        }
+
+        function downloadExcel() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk diunduh', 'warning');
+                return;
+            }
+            
+            // Create new workbook
+            const wb = XLSX.utils.book_new();
+            
+            if (currentMode === 'team') {
+                // Create summary sheet
+                const summaryData = [
+                    ['HASIL PEMBAGIAN TIM'],
+                    [],
+                    ['Tanggal Generate', new Date().toLocaleDateString('id-ID')],
+                    ['Jumlah Tim', currentTeams.length],
+                    ['Total Nama Unik', allNames.length],
+                    ['Total Slot', currentTeams.reduce((sum, team) => sum + team.members.length, 0)],
+                    [],
+                    ['STATISTIK'],
+                    ['Tim', 'Jumlah Anggota']
+                ];
+                
+                currentTeams.forEach((team, index) => {
+                    summaryData.push([team.name, team.members.length]);
+                });
+                
+                const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
+                
+                // Style summary sheet
+                const summaryRange = XLSX.utils.decode_range(summarySheet['!ref']);
+                
+                // Set column widths
+                summarySheet['!cols'] = [
+                    { wch: 30 },
+                    { wch: 20 }
+                ];
+                
+                // Add summary sheet
+                XLSX.utils.book_append_sheet(wb, summarySheet, 'Summary');
+                
+                // Create detailed sheet for each team
+                currentTeams.forEach((team, teamIndex) => {
+                    const teamData = [
+                        [`${team.name} - ${team.members.length} Anggota`],
+                        [],
+                        ['No', 'Nama', 'Status']
+                    ];
+                    
+                    const globalUsage = {};
+                    allNames.forEach(name => globalUsage[name] = 0);
+                    currentTeams.forEach(t => {
+                        t.members.forEach(name => globalUsage[name]++);
+                    });
+                    
+                    team.members.forEach((member, i) => {
+                        const status = globalUsage[member] > 1 ? `Repeat ${globalUsage[member]}x` : '-';
+                        teamData.push([i + 1, member, status]);
+                    });
+                    
+                    const teamSheet = XLSX.utils.aoa_to_sheet(teamData);
+                    
+                    // Set column widths
+                    teamSheet['!cols'] = [
+                        { wch: 5 },
+                        { wch: 30 },
+                        { wch: 15 }
+                    ];
+                    
+                    // Add team sheet
+                    XLSX.utils.book_append_sheet(wb, teamSheet, `Tim ${teamIndex + 1}`);
+                });
+                
+                // Create all teams sheet
+                const allTeamsData = [
+                    ['SEMUA TIM'],
+                    [],
+                    ['Tim', 'No', 'Nama', 'Status']
+                ];
+                
+                currentTeams.forEach((team) => {
+                    team.members.forEach((member, i) => {
+                        const globalUsage = {};
+                        allNames.forEach(name => globalUsage[name] = 0);
+                        currentTeams.forEach(t => {
+                            t.members.forEach(name => globalUsage[name]++);
+                        });
+                        const status = globalUsage[member] > 1 ? `Repeat ${globalUsage[member]}x` : '-';
+                        allTeamsData.push([team.name, i + 1, member, status]);
+                    });
+                    allTeamsData.push(['', '', '', '']); // Empty row between teams
+                });
+                
+                const allTeamsSheet = XLSX.utils.aoa_to_sheet(allTeamsData);
+                
+                // Set column widths
+                allTeamsSheet['!cols'] = [
+                    { wch: 20 },
+                    { wch: 5 },
+                    { wch: 30 },
+                    { wch: 15 }
+                ];
+                
+                XLSX.utils.book_append_sheet(wb, allTeamsSheet, 'All Teams');
+                
+            } else {
+                // Schedule mode
+                const scheduleSheetData = [
+                    ['JADWAL PIKET'],
+                    [],
+                    ['Periode', `${document.getElementById('startDate').value} - ${document.getElementById('endDate').value}`],
+                    ['Include Weekend', document.getElementById('includeWeekends').value === 'yes' ? 'Ya' : 'Tidak'],
+                    [],
+                    ['Tanggal', 'Hari', 'Tim/Shift', 'Petugas']
+                ];
+                
+                scheduleData.forEach(item => {
+                    scheduleSheetData.push([
+                        item.date.toLocaleDateString('id-ID'),
+                        item.dayName,
+                        item.team.name,
+                        item.team.members.join(', ')
+                    ]);
+                });
+                
+                const scheduleSheet = XLSX.utils.aoa_to_sheet(scheduleSheetData);
+                
+                // Set column widths
+                scheduleSheet['!cols'] = [
+                    { wch: 20 },
+                    { wch: 15 },
+                    { wch: 20 },
+                    { wch: 40 }
+                ];
+                
+                XLSX.utils.book_append_sheet(wb, scheduleSheet, 'Schedule');
+                
+                // Add monthly view sheets if schedule mode
+                if (scheduleData.length > 0) {
+                    const monthlyData = {};
+                    
+                    scheduleData.forEach(item => {
+                        const monthYear = item.date.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+                        if (!monthlyData[monthYear]) {
+                            monthlyData[monthYear] = [
+                                [`Jadwal ${monthYear}`],
+                                [],
+                                ['Tanggal', 'Hari', 'Tim', 'Petugas']
+                            ];
+                        }
+                        monthlyData[monthYear].push([
+                            item.date.getDate(),
+                            item.dayName,
+                            item.team.name,
+                            item.team.members.join(', ')
+                        ]);
+                    });
+                    
+                    Object.keys(monthlyData).forEach((month, index) => {
+                        const monthSheet = XLSX.utils.aoa_to_sheet(monthlyData[month]);
+                        monthSheet['!cols'] = [
+                            { wch: 10 },
+                            { wch: 15 },
+                            { wch: 20 },
+                            { wch: 40 }
+                        ];
+                        XLSX.utils.book_append_sheet(wb, monthSheet, month.substring(0, 31)); // Excel sheet name limit
+                    });
+                }
+            }
+            
+            // Write file
+            XLSX.writeFile(wb, `${currentMode === 'team' ? 'pembagian_tim' : 'jadwal_piket'}_${new Date().getTime()}.xlsx`);
+            
+            showToast('Berhasil!', 'File Excel telah diunduh dengan format yang rapih');
+        }
+
+        function downloadJSON() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk diunduh', 'warning');
+                return;
+            }
+            
+            const data = {
+                mode: currentMode,
+                generated: new Date().toISOString(),
+                uniqueNames: allNames,
+                teams: currentTeams,
+                schedule: currentMode === 'schedule' ? scheduleData.map(item => ({
+                    date: item.date.toISOString(),
+                    dayName: item.dayName,
+                    teamName: item.team.name,
+                    members: item.team.members
+                })) : null
+            };
+            
+            const json = JSON.stringify(data, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `${currentMode === 'team' ? 'teams' : 'schedule'}_${new Date().getTime()}.json`;
+            link.click();
+            
+            showToast('Berhasil!', 'File JSON telah diunduh');
+        }
+
+        function downloadPDF() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk diunduh', 'warning');
+                return;
+            }
+            
+            // Create PDF content as HTML with print-optimized styling
+            let pdfContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${currentMode === 'team' ? 'Pembagian Tim' : 'Jadwal Piket'}</title>
+                    <style>
+                        @page {
+                            size: A4;
+                            margin: 15mm;
+                        }
+                        
+                        body { 
+                            font-family: Arial, sans-serif; 
+                            padding: 0;
+                            margin: 0;
+                            color: #000;
+                        }
+                        
+                        h1 { 
+                            text-align: center;
+                            font-size: 24pt;
+                            margin-bottom: 10px;
+                        }
+                        
+                        .info { 
+                            text-align: center; 
+                            margin-bottom: 30px; 
+                            font-size: 11pt;
+                            color: #333;
+                        }
+                        
+                        .stats {
+                            display: flex;
+                            justify-content: space-around;
+                            border: 2px solid #000;
+                            padding: 15px;
+                            margin-bottom: 30px;
+                            page-break-inside: avoid;
+                        }
+                        
+                        .stat {
+                            text-align: center;
+                        }
+                        
+                        .stat-value {
+                            font-size: 20pt;
+                            font-weight: bold;
+                            color: #000;
+                        }
+                        
+                        .stat-label {
+                            font-size: 10pt;
+                            color: #666;
+                            margin-top: 5px;
+                        }
+                        
+                        .teams-grid {
+                            display: grid;
+                            grid-template-columns: repeat(2, 1fr);
+                            gap: 15px;
+                            margin-bottom: 20px;
+                        }
+                        
+                        @media print and (orientation: landscape) {
+                            .teams-grid {
+                                grid-template-columns: repeat(4, 1fr);
+                            }
+                        }
+                        
+                        .team { 
+                            border: 2px solid #000;
+                            padding: 15px;
+                            page-break-inside: avoid;
+                        }
+                        
+                        .team-header { 
+                            background: #f0f0f0; 
+                            padding: 10px;
+                            margin: -15px -15px 10px -15px;
+                            font-weight: bold;
+                            font-size: 12pt;
+                        }
+                        
+                        .member { 
+                            padding: 5px 10px; 
+                            border-bottom: 1px solid #ddd;
+                            font-size: 10pt;
+                        }
+                        
+                        .member:last-child {
+                            border-bottom: none;
+                        }
+                        
+                        table { 
+                            width: 100%; 
+                            border-collapse: collapse;
+                            font-size: 10pt;
+                        }
+                        
+                        th, td { 
+                            padding: 8px; 
+                            text-align: left; 
+                            border: 1px solid #000;
+                        }
+                        
+                        th { 
+                            background: #333;
+                            color: white;
+                            font-weight: bold;
+                        }
+                        
+                        tr:nth-child(even) {
+                            background: #f9f9f9;
+                        }
+                        
+                        .page-break {
+                            page-break-after: always;
+                        }
+                        
+                        @media print {
+                            body {
+                                -webkit-print-color-adjust: exact;
+                                print-color-adjust: exact;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>${currentMode === 'team' ? 'Hasil Pembagian Tim' : 'Jadwal Piket'}</h1>
+                    <div class="info">
+                        Tanggal Generate: ${new Date().toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        })}<br>
+                        ${currentMode === 'schedule' ? 
+                            `Periode: ${document.getElementById('startDate').value} - ${document.getElementById('endDate').value}` :
+                            ''
+                        }
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">${allNames.length}</div>
+                            <div class="stat-label">Nama Unik</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${currentTeams.length}</div>
+                            <div class="stat-label">Jumlah ${currentMode === 'team' ? 'Tim' : 'Periode'}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${currentTeams.reduce((sum, team) => sum + team.members.length, 0)}</div>
+                            <div class="stat-label">Total Slot</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">${(currentTeams.reduce((sum, team) => sum + team.members.length, 0) / currentTeams.length).toFixed(1)}</div>
+                            <div class="stat-label">Rata-rata/Tim</div>
+                        </div>
+                    </div>
+            `;
+            
+            if (currentMode === 'team') {
+                pdfContent += '<div class="teams-grid">';
+                currentTeams.forEach((team, index) => {
+                    pdfContent += `
+                        <div class="team">
+                            <div class="team-header">${team.name} (${team.members.length} anggota)</div>
+                    `;
+                    team.members.forEach((member, i) => {
+                        pdfContent += `<div class="member">${i + 1}. ${member}</div>`;
+                    });
+                    pdfContent += `</div>`;
+                });
+                pdfContent += '</div>';
+            } else {
+                pdfContent += `<table><thead><tr><th>Tanggal</th><th>Hari</th><th>Tim</th><th>Petugas</th></tr></thead><tbody>`;
+                scheduleData.forEach(item => {
+                    pdfContent += `
+                        <tr>
+                            <td>${item.date.toLocaleDateString('id-ID')}</td>
+                            <td>${item.dayName}</td>
+                            <td><strong>${item.team.name}</strong></td>
+                            <td>${item.team.members.join(', ')}</td>
+                        </tr>
+                    `;
+                });
+                pdfContent += `</tbody></table>`;
+            }
+            
+            pdfContent += `
+                    <div style="margin-top: 30px; text-align: center; font-size: 9pt; color: #666;">
+                        Generated by Random Team Generator & Schedule Maker<br>
+                        © ${new Date().getFullYear()}
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            // Open in new window for printing to PDF
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(pdfContent);
+            printWindow.document.close();
+            
+            // Auto trigger print dialog after short delay
+            setTimeout(() => {
+                printWindow.print();
+            }, 500);
+            
+            showToast('PDF', 'Silakan pilih "Save as PDF" pada dialog print');
         }
 
         function downloadICS() {
@@ -1655,9 +2550,232 @@
             return `${year}${month}${day}`;
         }
 
-        function printResults() {
+        // IMPROVED PRINT FUNCTIONS WITH ORIENTATION CONTROL
+        function showPrintPreview() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk di-print', 'warning');
+                return;
+            }
+            
+            const modal = document.getElementById('printModal');
+            const preview = document.getElementById('printPreview');
+            
+            // Build preview content with responsive grid layout
+            let previewContent = `
+                <div class="print-settings" style="margin-bottom: 20px; padding: 15px; background: #f0f0f0; border-radius: 10px;">
+                    <h3 style="margin-bottom: 10px;">Print Settings</h3>
+                    <div style="display: flex; gap: 20px; align-items: center;">
+                        <div>
+                            <label style="font-weight: bold;">Orientasi Kertas:</label>
+                            <select id="printOrientation" onchange="updatePrintPreview()" style="padding: 5px; margin-left: 10px;">
+                                <option value="portrait">Portrait (Vertikal)</option>
+                                <option value="landscape">Landscape (Horizontal)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-weight: bold;">Ukuran Kertas:</label>
+                            <select id="printSize" onchange="updatePrintPreview()" style="padding: 5px; margin-left: 10px;">
+                                <option value="a4">A4</option>
+                                <option value="a3">A3</option>
+                                <option value="letter">Letter</option>
+                                <option value="legal">Legal</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="font-weight: bold;">Kolom per Halaman:</label>
+                            <select id="printColumns" onchange="updatePrintPreview()" style="padding: 5px; margin-left: 10px;">
+                                <option value="auto">Auto</option>
+                                <option value="1">1 Kolom</option>
+                                <option value="2">2 Kolom</option>
+                                <option value="3">3 Kolom</option>
+                                <option value="4">4 Kolom</option>
+                                <option value="6">6 Kolom</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="printContent">
+                    ${generatePrintContent('portrait', 'auto')}
+                </div>
+            `;
+            
+            preview.innerHTML = previewContent;
+            modal.classList.add('active');
+        }
+        
+        function updatePrintPreview() {
+            const orientation = document.getElementById('printOrientation').value;
+            const columns = document.getElementById('printColumns').value;
+            const printContent = document.getElementById('printContent');
+            
+            printContent.innerHTML = generatePrintContent(orientation, columns);
+        }
+        
+        function generatePrintContent(orientation, columns) {
+            let gridColumns = columns === 'auto' ? 
+                (orientation === 'landscape' ? 4 : 2) : 
+                parseInt(columns);
+            
+            let content = `
+                <div class="print-header" style="display: block; text-align: center; margin-bottom: 20px;">
+                    <h1 style="font-size: 20pt; margin-bottom: 8px;">${currentMode === 'team' ? 'Hasil Pembagian Tim' : 'Jadwal Piket'}</h1>
+                    <div style="font-size: 10pt; color: #666;">
+                        Tanggal Cetak: ${new Date().toLocaleDateString('id-ID', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        })}
+                    </div>
+                    <div style="font-size: 11pt; margin-top: 5px;">
+                        Total: ${currentTeams.length} ${currentMode === 'team' ? 'tim' : 'periode'}, ${allNames.length} nama unik
+                    </div>
+                </div>
+            `;
+            
+            // Add statistics
+            const totalMembers = currentTeams.reduce((sum, team) => sum + team.members.length, 0);
+            const avgPerTeam = (totalMembers / currentTeams.length).toFixed(1);
+            
+            content += `
+                <div style="display: flex; justify-content: space-around; border: 2px solid #333; padding: 15px; margin-bottom: 20px;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 18pt; font-weight: bold;">${allNames.length}</div>
+                        <div style="font-size: 9pt; color: #666;">Nama Unik</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18pt; font-weight: bold;">${currentTeams.length}</div>
+                        <div style="font-size: 9pt; color: #666;">Jumlah ${currentMode === 'team' ? 'Tim' : 'Periode'}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18pt; font-weight: bold;">${totalMembers}</div>
+                        <div style="font-size: 9pt; color: #666;">Total Slot</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 18pt; font-weight: bold;">${avgPerTeam}</div>
+                        <div style="font-size: 9pt; color: #666;">Rata-rata/Tim</div>
+                    </div>
+                </div>
+            `;
+            
+            // Add teams or schedule with dynamic grid
+            if (currentMode === 'team') {
+                content += `<div style="display: grid; grid-template-columns: repeat(${gridColumns}, 1fr); gap: 10px;">`;
+                currentTeams.forEach((team, index) => {
+                    content += `
+                        <div style="border: 2px solid #333; padding: 10px;">
+                            <div style="background: #f0f0f0; margin: -10px -10px 10px -10px; padding: 8px; font-weight: bold;">
+                                ${team.name} (${team.members.length})
+                            </div>
+                            <ul style="list-style: none; padding: 0; margin: 0;">
+                    `;
+                    team.members.forEach((member, i) => {
+                        content += `
+                            <li style="padding: 4px 0; border-bottom: 1px solid #ddd; font-size: ${gridColumns > 3 ? '9pt' : '10pt'};">
+                                ${i + 1}. ${member}
+                            </li>
+                        `;
+                    });
+                    content += '</ul></div>';
+                });
+                content += '</div>';
+                
+                // Add layout preview info
+                content += `
+                    <div style="margin-top: 20px; padding: 10px; background: #e8f4f8; border-radius: 5px; text-align: center;">
+                        <strong>Layout Preview:</strong> ${gridColumns} kolom ${orientation === 'landscape' ? '(Landscape)' : '(Portrait)'}<br>
+                        <small>Tata letak akan menyesuaikan dengan orientasi kertas saat print</small>
+                    </div>
+                `;
+            } else {
+                // Schedule table
+                content += `
+                    <table style="width: 100%; border-collapse: collapse; font-size: ${orientation === 'landscape' ? '9pt' : '10pt'};">
+                        <thead>
+                            <tr style="background: #333; color: white;">
+                                <th style="padding: 8px; border: 1px solid #333;">Tanggal</th>
+                                <th style="padding: 8px; border: 1px solid #333;">Hari</th>
+                                <th style="padding: 8px; border: 1px solid #333;">Tim/Shift</th>
+                                <th style="padding: 8px; border: 1px solid #333;">Petugas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                scheduleData.forEach((item, index) => {
+                    content += `
+                        <tr style="background: ${index % 2 === 0 ? '#fff' : '#f9f9f9'};">
+                            <td style="padding: 6px; border: 1px solid #666;">${item.date.toLocaleDateString('id-ID')}</td>
+                            <td style="padding: 6px; border: 1px solid #666;">${item.dayName}</td>
+                            <td style="padding: 6px; border: 1px solid #666;"><strong>${item.team.name}</strong></td>
+                            <td style="padding: 6px; border: 1px solid #666;">${item.team.members.join(', ')}</td>
+                        </tr>
+                    `;
+                });
+                content += '</tbody></table>';
+            }
+            
+            return content;
+        }
+        
+        function closePrintPreview() {
+            document.getElementById('printModal').classList.remove('active');
+        }
+
+        function printFromPreview() {
+            const orientation = document.getElementById('printOrientation').value;
+            const size = document.getElementById('printSize').value;
+            const columns = document.getElementById('printColumns').value;
+            
+            // Create custom print styles based on settings
+            const printStyles = `
+                <style id="customPrintStyles">
+                    @media print {
+                        @page {
+                            size: ${size} ${orientation};
+                            margin: ${size === 'a3' ? '15mm' : '10mm'};
+                        }
+                        
+                        .teams-container {
+                            display: grid !important;
+                            grid-template-columns: repeat(${
+                                columns === 'auto' ? 
+                                (orientation === 'landscape' ? 4 : 2) : 
+                                columns
+                            }, 1fr) !important;
+                        }
+                        
+                        .print-settings {
+                            display: none !important;
+                        }
+                    }
+                </style>
+            `;
+            
+            // Add custom print styles to head temporarily
+            const styleElement = document.createElement('style');
+            styleElement.innerHTML = printStyles;
+            document.head.appendChild(styleElement);
+            
+            // Print
             window.print();
-            showToast('Print', 'Silakan pilih printer');
+            
+            // Remove custom styles after print
+            setTimeout(() => {
+                document.head.removeChild(styleElement);
+            }, 1000);
+            
+            closePrintPreview();
+            showToast('Print', 'Dokumen siap untuk dicetak dengan layout yang dipilih');
+        }
+
+        function printResults() {
+            if (currentTeams.length === 0) {
+                showAlert('⚠️ Tidak ada data untuk di-print', 'warning');
+                return;
+            }
+            
+            // Show print preview instead of direct print
+            showPrintPreview();
         }
     </script>
 </body>
