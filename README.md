@@ -1,232 +1,362 @@
-# 🎲 Random Team Generator & Schedule Maker
-```
-Contoh:
-Ahmad Fauzi
-Budi Santoso
-Citra Dewi
-Diana Putri
-Eko Prasetyo
+# 📅 Jadwal Piket Mingguan Generator
+
+Aplikasi web modern untuk membuat jadwal piket otomatis dengan sistem rotasi yang adil. Sempurna untuk sekolah, kantor, komunitas, atau organisasi yang memerlukan pembagian jadwal piket yang merata.
+
+## ✨ Fitur Utama
+
+- 🎲 **Pembagian Otomatis & Adil** - Algoritma rotasi cerdas memastikan setiap orang mendapat jumlah piket yang merata
+- 📊 **Export Multi-Format** - Excel dengan styling, PDF, Copy to Clipboard, dan Print
+- 🎨 **Dark/Light Mode** - Tema yang dapat disesuaikan untuk kenyamanan mata
+- 📱 **Responsive Design** - Berfungsi sempurna di desktop, tablet, dan mobile
+- 📈 **Statistik Real-time** - Lihat distribusi jadwal dan fairness metrics
+- 🔄 **Regenerate** - Acak ulang jadwal dengan satu klik
+- 💾 **No Dependencies** - 100% standalone, tidak perlu koneksi internet
+
+## 🚀 Demo Langsung
+
+[Live Demo](#) | [Download HTML](https://github.com/yourusername/jadwal-piket-generator)
+
+## 📖 Cara Penggunaan
+
+### 1. Input Data Dasar
 
 ```
-
-2. **Atur Parameter**
-- Jumlah Tim: 3
-- Anggota per Tim: 2 (atau kosongkan untuk bagi rata)
-
-3. **Generate!**
-- Klik tombol "Generate Tim"
-- Hasil langsung muncul dengan visualisasi menarik
-
-### Mode Tim/Kelompok
-
-**Use Case:** Pembagian kelompok presentasi, tim project, kelompok belajar
-
-1. Pilih tab "Mode Tim/Kelompok"
-2. Masukkan daftar nama (bisa copy-paste dari Excel)
-3. Tentukan jumlah tim yang diinginkan
-4. (Opsional) Tentukan jumlah anggota per tim
-5. Pilih template penamaan
-6. Klik "Generate Tim"
-
-### Mode Jadwal Piket
-
-**Use Case:** Jadwal piket harian, shift kerja, roster bulanan
-
-1. Pilih tab "Mode Jadwal Piket"
-2. Masukkan nama petugas
-3. Set periode jadwal:
-- Tanggal mulai
-- Tanggal selesai
-- Include/exclude weekend
-4. Pilih template (Hari/Shift/Custom)
-5. Klik "Generate Jadwal"
-
-## 🏷️ Template Penamaan
-
-| Template | Hasil | Use Case |
-|----------|-------|----------|
-| **Default** | Tim 1, Tim 2, Tim 3... | Pembagian kelompok umum |
-| **Hari** | Senin, Selasa, Rabu... | Jadwal piket mingguan |
-| **Minggu** | Minggu 1, Minggu 2... | Jadwal bulanan |
-| **Bulan** | Januari, Februari... | Jadwal tahunan |
-| **Shift** | Shift Pagi, Siang, Malam | Jadwal kerja shift |
-| **Custom** | Sesuai input user | Nama tim khusus |
-
-## 💾 Export Data
-
-### Format Export yang Tersedia:
-
-1. **📋 Copy Text**
+Masukkan nama-nama petugas piket:
+- Pisahkan dengan koma: Ahmad, Budi, Citra, Diana
+- Atau dengan enter (satu nama per baris)
+- Nama duplikat otomatis dihilangkan
 ```
 
-=== HASIL PEMBAGIAN TIM ===
-Tim 1: Ahmad, Budi, Citra
-Tim 2: Diana, Eko, Fajar
+### 2. Atur Periode Jadwal
 
+- **Tanggal Mulai**: Pilih tanggal awal periode piket
+- **Tanggal Selesai**: Pilih tanggal akhir periode piket
+- Default: Awal hingga akhir bulan berjalan
+
+### 3. Pilih Hari Kerja
+
+```javascript
+☑ Senin    ☑ Selasa   ☑ Rabu     ☑ Kamis
+☑ Jumat    ☑ Sabtu    ☐ Minggu
+```
+Centang hari-hari yang memerlukan piket
+
+### 4. Generate & Export
+
+- Klik **🎲 Generate** untuk membuat jadwal
+- **🔄 Acak Ulang** untuk variasi baru dengan distribusi tetap adil
+- **📊 Export Excel** dengan format dan warna profesional
+- **📄 Export PDF** untuk dokumen formal
+- **📋 Copy** untuk paste ke aplikasi lain
+
+## 🎯 Algoritma Rotasi Adil
+
+Sistem menggunakan algoritma **Fair Rotation with Weekly Reset**:
+
+```javascript
+1. Track jumlah piket setiap orang
+2. Prioritaskan orang dengan piket paling sedikit
+3. Cegah seseorang piket 2x dalam minggu yang sama (jika memungkinkan)
+4. Reset pool mingguan untuk variasi
+5. Shuffle occasional untuk menghindari pola monoton
 ```
 
-2. **📊 Copy Table** - Format tab-separated untuk Excel
+### Contoh Distribusi (9 orang, 30 hari kerja):
 
-3. **💾 Download CSV** - File .csv dengan encoding UTF-8
+```
+Ahmad    : ████ 4 hari
+Budi     : ███ 3 hari  
+Citra    : ████ 4 hari
+Diana    : ███ 3 hari
+Eko      : ███ 3 hari
+Fajar    : ████ 4 hari
+George   : ███ 3 hari
+Heri     : ███ 3 hari
+Irsyad   : ███ 3 hari
+-----------------------
+Gap: Max(4) - Min(3) = 1 ✅ Fair
+```
 
-4. **📅 Download Calendar (.ics)** - Untuk import ke:
-- Google Calendar
-- Microsoft Outlook
-- Apple Calendar
+## 📊 Format Export Excel
 
-5. **🖨️ Print** - Layout optimized untuk cetak
+Export Excel menghasilkan file dengan styling profesional:
 
-## 🛠️ Instalasi & Deployment
+### Struktur Tabel
+```
+┌─────────┬──────────┬──────────┬──────────┬──────────┐
+│         │ Minggu 1 │ Minggu 2 │ Minggu 3 │ Minggu 4 │
+├─────────┼──────────┼──────────┼──────────┼──────────┤
+│ Senin   │  AHMAD   │  DIANA   │  GEORGE  │  BUDI    │
+│ Selasa  │  BUDI    │  EKO     │  HERI    │  CITRA   │
+│ Rabu    │  CITRA   │  FAJAR   │  IRSYAD  │  DIANA   │
+│ Kamis   │  DIANA   │  GEORGE  │  AHMAD   │  EKO     │
+│ Jumat   │  EKO     │  HERI    │  BUDI    │  FAJAR   │
+│ Sabtu   │  FAJAR   │  IRSYAD  │  CITRA   │  GEORGE  │
+│ Minggu  │  LIBUR   │  LIBUR   │  LIBUR   │  LIBUR   │
+└─────────┴──────────┴──────────┴──────────┴──────────┘
+```
 
-### Opsi 1: Local Usage
+### Styling Features
+- 🔵 **Header**: Background biru (#4472C4) dengan teks putih bold
+- 🔷 **Kolom Hari**: Background biru muda (#B4C7E7)
+- 🔄 **Zebra Stripes**: Baris genap biru sangat muda (#DBEEF4)
+- 🟡 **Cell LIBUR**: Background kuning muda dengan teks italic
+- 📐 **Borders**: Garis hitam untuk semua cell
+- ❄️ **Freeze Panes**: Header dan kolom hari tetap terlihat saat scroll
 
-1. Download file `index.html`
-2. Double-click untuk membuka di browser
-3. Bookmark untuk akses cepat
+## 🛠️ Instalasi
 
-### Opsi 2: GitHub Pages (Recommended)
-
-1. **Fork/Clone Repository**
+### Opsi 1: Penggunaan Lokal
 ```bash
-git clone https://github.com/yourusername/team-generator.git
+1. Download file index.html
+2. Buka dengan browser apapun (Chrome, Firefox, Edge, Safari)
+3. Bookmark untuk akses cepat
 ```
 
-2. **Push ke GitHub**
-   ```bash
-   git add index.html README.md
-   git commit -m "Initial commit"
-   git push origin main
-   ```
-3. **Enable GitHub Pages**
-   * Settings → Pages
-   * Source: Deploy from branch
-   * Branch: main / (root)
-   * Save
-4. **Access Your App**
-   ```
-   https://yourusername.github.io/team-generator/
-   ```
+### Opsi 2: Deploy ke GitHub Pages
+```bash
+# Clone atau buat repository baru
+git init jadwal-piket-generator
+cd jadwal-piket-generator
+
+# Copy file HTML
+# Save sebagai index.html
+
+# Push ke GitHub
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/yourusername/jadwal-piket-generator.git
+git push -u origin main
+
+# Enable GitHub Pages
+# Settings → Pages → Source: Deploy from branch → main
+```
 
 ### Opsi 3: Web Server
+Upload `index.html` ke hosting apapun (Netlify, Vercel, atau server tradisional)
 
-Upload `index.html` ke web server manapun (Apache, Nginx, dll)
+## 💻 Teknologi
 
-## 📱 Contoh Use Case
+```javascript
+{
+  "HTML5": "Struktur semantic dan form controls",
+  "CSS3": {
+    "features": [
+      "CSS Variables untuk theming",
+      "Grid & Flexbox untuk layout",
+      "Gradients & Animations",
+      "Media queries untuk responsive"
+    ]
+  },
+  "JavaScript": {
+    "type": "Vanilla ES6+",
+    "libraries": [
+      "xlsx.js - Export Excel",
+      "jsPDF - Generate PDF",
+      "ExcelJS - Advanced Excel styling"
+    ],
+    "patterns": [
+      "State management",
+      "Event delegation",
+      "Async/await"
+    ]
+  }
+}
+```
 
-### 🏫 Pendidikan
+## 📱 Use Cases
 
-* Pembagian kelompok diskusi
-* Jadwal piket kelas
-* Tim untuk praktikum
-* Kelompok presentasi
+### 🏫 **Sekolah/Kampus**
+- Jadwal piket kelas harian
+- Roster guru jaga
+- Jadwal pengawas ujian
+- Piket laboratorium
 
-### 🏢 Perkantoran
+### 🏢 **Kantor/Perusahaan**
+- Jadwal piket kebersihan
+- Roster customer service
+- Shift kerja karyawan
+- Jadwal standby IT
 
-* Jadwal piket kebersihan
-* Shift kerja karyawan
-* Tim project
-* Roster jaga malam
+### 🏘️ **Komunitas/RT-RW**
+- Jadwal ronda malam
+- Piket pos keamanan
+- Jadwal imam masjid
+- Roster jaga pos COVID
 
-### 🏘️ Komunitas
-
-* Jadwal ronda RT/RW
-* Tim panitia acara
-* Kelompok arisan
-* Jadwal imam masjid
-
-### 🏠 Keluarga
-
-* Jadwal tugas rumah
-* Pembagian kamar hotel
-* Tim masak saat gathering
-* Jadwal jaga orang sakit
+### 🏥 **Rumah Sakit/Klinik**
+- Jadwal jaga dokter
+- Roster perawat
+- Piket apoteker
+- Jadwal cleaning service
 
 ## 📸 Screenshots
 
-### Desktop View
-
+### Desktop View - Light Mode
 ```
-┌─────────────────────────────────────┐
-│     🎲 Random Team Generator        │
-│                                     │
-│  ┌──────┐  ┌──────┐  ┌──────┐     │
-│  │ Tim 1│  │ Tim 2│  │ Tim 3│     │
-│  │      │  │      │  │      │     │
-│  │ • A  │  │ • D  │  │ • G  │     │
-│  │ • B  │  │ • E  │  │ • H  │     │
-│  │ • C  │  │ • F  │  │ • I  │     │
-│  └──────┘  └──────┘  └──────┘     │
-│                                     │
-│  [Export CSV] [Copy] [Print]       │
-└─────────────────────────────────────┘
+┌────────────────────────────────────────────────────┐
+│  📅 Jadwal Piket Mingguan Generator           ☀️/🌙 │
+├────────────────────────────────────────────────────┤
+│                                                     │
+│  📝 Daftar Nama                                    │
+│  ┌────────────────────────────────────┐           │
+│  │ Ahmad, Budi, Citra, Diana, Eko ... │           │
+│  └────────────────────────────────────┘           │
+│  Total: 9 nama unik                               │
+│                                                     │
+│  📅 Periode: [01/01/2025] - [31/01/2025]         │
+│                                                     │
+│  📆 Hari Kerja: ☑ Sen ☑ Sel ☑ Rab ☑ Kam ☑ Jum    │
+│                                                     │
+│  [🎲 Generate] [🔄 Acak Ulang] [🗑️ Reset]        │
+│                                                     │
+├────────────────────────────────────────────────────┤
+│  📊 Statistik                                      │
+│  ┌────┬────┬────┬────┐                           │
+│  │ 9  │ 4  │ 22 │3.5 │                           │
+│  │Nama│Ming│Hari│Avg │                           │
+│  └────┴────┴────┴────┘                           │
+│                                                     │
+│  📆 Jadwal Piket Januari 2025                     │
+│  ┌─────────────────────────────────┐              │
+│  │ Tabel jadwal dengan warna       │              │
+│  └─────────────────────────────────┘              │
+│                                                     │
+│  [📊 Excel] [📄 PDF] [📋 Copy] [🖨️ Print]        │
+└────────────────────────────────────────────────────┘
 ```
 
 ### Mobile View
-
 ```
-┌─────────────┐
-│ 🎲 Generator│
-├─────────────┤
-│ Input Names │
-│ [........]  │
-│             │
-│ Teams: [3]  │
-│ Members:[2] │
-│             │
-│ [Generate]  │
-├─────────────┤
-│ Results:    │
-│ • Tim 1     │
-│ • Tim 2     │
-│ • Tim 3     │
-└─────────────┘
+┌─────────────────┐
+│ 📅 Generator    │
+│      ☀️/🌙      │
+├─────────────────┤
+│ Input Names     │
+│ [............]  │
+│                 │
+│ Date Range      │
+│ [Start] [End]   │
+│                 │
+│ Work Days       │
+│ ☑☑☑☑☑☑☐        │
+│                 │
+│ [🎲 Generate]   │
+├─────────────────┤
+│ Results         │
+│ • Stats         │
+│ • Schedule      │
+│ • Export        │
+└─────────────────┘
 ```
 
-## 🔧 Teknologi
+## 🔧 Konfigurasi & Customization
 
-* **HTML5** - Struktur aplikasi
-* **CSS3** - Styling dengan gradients, animations, flexbox/grid
-* **Vanilla JavaScript** - Logika aplikasi tanpa framework
-* **No Dependencies** - 100% standalone, tidak perlu library eksternal
-* **Responsive Design** - Mobile-first approach
-* **Local Storage Ready** - Untuk fitur save/load (future update)
+### Mengubah Warna Theme
+```css
+:root {
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --success-gradient: linear-gradient(135deg, #00c851, #00a152);
+  /* Sesuaikan warna sesuai branding */
+}
+```
 
-## 📄 Lisensi
+### Modifikasi Algoritma Rotasi
+```javascript
+// Di fungsi generateWeeklySchedule()
+// Ubah logika prioritas sesuai kebutuhan
+if (weekNumber % 2 === 0) {
+    state.allNames = shuffleArray([...state.allNames]);
+}
+```
+
+## 🐛 Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Excel tidak ter-style | Browser mungkin tidak support ExcelJS, akan fallback ke export simple |
+| Generate tidak jalan | Pastikan minimal ada nama sebanyak hari kerja per minggu |
+| Print layout berantakan | Gunakan Chrome/Edge untuk hasil print terbaik |
+| Dark mode tidak tersimpan | Fitur localStorage belum diimplementasi (future update) |
+
+## 📝 Changelog
+
+### Version 1.1.0 (Current)
+- ✅ Fixed syntax error in export functions
+- ✅ Added ExcelJS for advanced Excel styling
+- ✅ Improved fair rotation algorithm
+- ✅ Added zebra striping for better readability
+- ✅ Enhanced mobile responsiveness
+
+### Version 1.0.0
+- Initial release
+- Basic scheduling functionality
+- Simple export features
+
+## 🚧 Roadmap
+
+- [ ] Save/Load jadwal dengan localStorage
+- [ ] Multiple shift per hari
+- [ ] Blacklist dates (tanggal merah)
+- [ ] Preferensi personal (request hari tertentu)
+- [ ] History jadwal sebelumnya
+- [ ] Email notification
+- [ ] Integration dengan Google Calendar API
+- [ ] PWA support untuk offline usage
+- [ ] Multi-language support
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
 
 MIT License - Bebas digunakan untuk keperluan apapun
 
 ```
 MIT License
 
-Copyright (c) 2024 [Your Name]
+Copyright (c) 2025 David Mario
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+in the Software without restriction...
 ```
 
 ## 👨‍💻 Author
 
-**[David Mario]**
-
-* Email: davidmario484@gmail.com
+**David Mario**
+- Email: davidmario484@gmail.com
+- GitHub: [@davidmario](https://github.com/davidmario)
 
 ## 🙏 Acknowledgments
 
-* Terinspirasi dari kebutuhan pembagian tim yang adil
-* Thanks to all contributors
-* Icon dari emoji standard
+- Terinspirasi dari kebutuhan pembagian jadwal piket yang adil dan transparan
+- Thanks to all contributors and users
+- Icons from emoji standard
+- Libraries: xlsx.js, jsPDF, ExcelJS teams
+
+## ❓ FAQ
+
+**Q: Apakah bisa untuk jadwal shift (pagi/siang/malam)?**
+A: Versi saat ini fokus pada jadwal harian. Fitur multi-shift dalam roadmap.
+
+**Q: Bisakah export ke Google Calendar?**
+A: Belum tersedia, tapi ada dalam roadmap untuk update mendatang.
+
+**Q: Apakah data tersimpan?**
+A: Belum ada fitur save permanen. Refresh = data hilang. Pastikan export dulu.
+
+**Q: Support berapa maksimal nama?**
+A: Technically unlimited, tapi untuk performa optimal disarankan < 100 nama.
+
+---
+
+📢 **Punya saran atau menemukan bug?** [Open an issue](https://github.com/yourusername/jadwal-piket-generator/issues)
